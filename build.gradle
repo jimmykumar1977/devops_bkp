@@ -12,7 +12,7 @@ def getVersionName = { -> def stdout = new ByteArrayOutputStream()
 }
 
 group = 'jimmyk'
-version = '0.0.1'
+version = gitVersion()
 sourceCompatibility = '1.8'
 
 repositories {
@@ -28,14 +28,9 @@ dependencies {
 	}
 }
 
-/*bootJar {
-	manifest {
-		attributes(
-				"APP_VERSION": project.version
-		)
-	}
-}*/
-
+processResources {
+	expand(project.properties)
+}
 
 
 test {
