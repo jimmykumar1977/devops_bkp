@@ -1,5 +1,7 @@
 package app.controller;
 
+import app.service.DateService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,16 +23,13 @@ import java.util.function.Supplier;
 @RestController
 public class DateController {
 
+    @Autowired
+    private DateService  dateService;
+
     @GetMapping("datetime")
     public String dateAndTime(@RequestParam(name = "format", required = false) Optional<FormatStyle> format) {
-        if (format.isPresent()) {
-            return formattedDate.apply(format.get());
-        }
-        return ZonedDateTime.now().toString();
+       return dateService.now(format);
     }
 
-    private Function<FormatStyle,String> formattedDate = (FormatStyle fmt) -> {
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(fmt);
-        return ZonedDateTime.now(ZoneId.of("Asia/Kolkata")).format(formatter);
-    };
+
 }
