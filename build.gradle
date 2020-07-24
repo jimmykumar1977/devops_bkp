@@ -1,20 +1,23 @@
 plugins {
 	id 'org.springframework.boot' version '2.3.1.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'com.palantir.git-version' version '0.12.2'
 	id 'java'
+	id 'org.ajoberstar.grgit' version '1.7.2'
+	id 'org.ajoberstar.release-opinion' version '1.7.2'
 }
-
-/* Gets the version name from the latest Git tag */
-def getVersionName = { -> def stdout = new ByteArrayOutputStream()
-	exec { commandLine 'git', 'describe', '–tags' standardOutput  stdout }
-	return stdout.toString().trim()
-}
+import org.ajoberstar.gradle.git.release.opinion.Strategies
 
 group = 'jimmyk'
-version = gitVersion()
 sourceCompatibility = '1.8'
 
+
+release {
+	versionStrategy Strategies.FINAL
+	defaultVersionStrategy Strategies.SNAPSHOT
+	tagStrategy {
+		generateMessage = { version -> "Version $project.version" }
+	}
+}
 repositories {
 	mavenCentral()
 }
@@ -27,11 +30,6 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 }
-
-processResources {
-	expand(project.properties)
-}
-
 
 test {
 	useJUnitPlatform()
