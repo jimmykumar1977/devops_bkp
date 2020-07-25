@@ -10,6 +10,24 @@ import org.ajoberstar.gradle.git.release.opinion.Strategies
 group = 'jimmyk'
 sourceCompatibility = '1.8'
 
+sourceSets {
+	integration {
+		java.srcDir "$projectDir/src/integration/java"
+		resources.srcDir "$projectDir/src/integration/resources"
+		compileClasspath += main.output + test.output
+		runtimeClasspath += main.output + test.output
+	}
+}
+task integrationTest(type: Test) {
+	description = 'Runs the integration tests.'
+	group = 'verification'
+	testClassesDirs = sourceSets.integration.output.classesDirs
+	classpath = sourceSets.integration.runtimeClasspath
+	outputs.upToDateWhen { false }
+	mustRunAfter test
+}
+
+check.dependsOn integrationTest
 
 release {
 	versionStrategy Strategies.FINAL
@@ -20,6 +38,11 @@ release {
 }
 repositories {
 	mavenCentral()
+}
+
+configurations {
+	integrationImplementation.extendsFrom testImplementation
+	integrationRuntime.extendsFrom testRuntime
 }
 
 dependencies {
