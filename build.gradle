@@ -10,6 +10,7 @@ version = scmVersion.version
 group = 'jimmyk'
 sourceCompatibility = '1.8'
 
+
 sourceSets {
 	integration {
 		java.srcDir "$projectDir/src/integration/java"
