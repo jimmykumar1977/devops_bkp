@@ -2,10 +2,10 @@ plugins {
 	id 'org.springframework.boot' version '2.3.1.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
-	id 'org.ajoberstar.grgit' version '1.7.2'
-	id 'org.ajoberstar.release-opinion' version '1.7.2'
+	id 'pl.allegro.tech.build.axion-release' version '1.11.0'
 }
-import org.ajoberstar.gradle.git.release.opinion.Strategies
+
+version = scmVersion.version
 
 group = 'jimmyk'
 sourceCompatibility = '1.8'
@@ -29,13 +29,7 @@ task integrationTest(type: Test) {
 
 check.dependsOn integrationTest
 
-release {
-	versionStrategy Strategies.FINAL
-	defaultVersionStrategy Strategies.SNAPSHOT
-	tagStrategy {
-		generateMessage = { version -> "Version $project.version" }
-	}
-}
+
 repositories {
 	mavenCentral()
 }
